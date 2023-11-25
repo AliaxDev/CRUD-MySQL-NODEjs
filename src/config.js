@@ -9,7 +9,7 @@ const database = {
     host: process.env.DATABASE_HOST || "localhost",
     user: process.env.DATABASE_USER || "aliaxdev",
     password: process.env.DATABASE_PASSWORD || "password",
-    database: process.env.DATABASE_NAME || "linksdb",
+    database: process.env.DATABASE_NAME || "contractsdb",
     port: process.env.DATABASE_PORT || 3306,
 }
 

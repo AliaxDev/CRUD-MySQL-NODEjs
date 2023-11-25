@@ -1,9 +1,10 @@
-CREATE DATABASE IF NOT EXISTS linksdb;
+CREATE DATABASE IF NOT EXISTS contractsdb;
 
-USE linksdb;
+USE contractsdb;
 
 -- TABLE USER
 -- all pasword wil be encrypted using SHA2
+
 CREATE TABLE users (
   id INT(11) NOT NULL AUTO_INCREMENT,
   fullname VARCHAR(100) NOT NULL,
@@ -23,20 +24,20 @@ INSERT INTO users (id, email, password, fullname)
 SELECT * FROM users;
 
 -- LINKS TABLE
-CREATE TABLE links (
+CREATE TABLE contracts (
   id INT(11) NOT NULL,
   title VARCHAR(150) NOT NULL,
-  url VARCHAR(255) NOT NULL,
+  contract VARCHAR(255) NOT NULL,
   description TEXT,
   user_id INT(11),
   created_at timestamp NOT NULL DEFAULT current_timestamp,
   CONSTRAINT fk_user FOREIGN KEY(user_id) REFERENCES users(id)
 );
 
-ALTER TABLE links
+ALTER TABLE contracts
   ADD PRIMARY KEY (id);
 
-ALTER TABLE links
+ALTER TABLE contracts
   MODIFY id INT(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT = 2;
 
-DESCRIBE links;
+DESCRIBE contracts;

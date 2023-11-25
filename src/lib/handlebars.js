@@ -1,5 +1,10 @@
 const { format } = require("timeago.js")
 
-const timeago = (savedTimestamp) => format(savedTimestamp + "UTC");
+const helpers = {}
 
-module.exports = timeago
+helpers.timeago = (timestamp) => {
+    return format(timestamp)
+}
+
+
+module.exports = helpers

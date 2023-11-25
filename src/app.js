@@ -1,6 +1,6 @@
 const Express = require('express')
 const appRouter = require('./routes/appRouter.js')
-const { create, helpers } = require('express-handlebars')
+const { create } = require('express-handlebars')
 const path = require('path')
 const morgan = require('morgan')
 
@@ -14,14 +14,14 @@ app.engine(
         layoutsDir: path.join(app.get("views"), "layouts"),
         partialsDir: path.join(app.get("views"), "partials"),
         extname: ".hbs",
-        helpers: require('./lib/handlebars')
+        helpers: require('./lib/handlebars.js')
     }).engine
 );
 app.set("view engine", ".hbs");
 
 //middleware
 app.use(morgan("dev"));
-//app.use(Express.urlencoded({ extends: false }))
+app.use(Express.urlencoded({ extended: false }))
 app.use(Express.json())
 
 //Global variables
