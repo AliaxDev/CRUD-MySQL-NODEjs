@@ -29,7 +29,8 @@ contractRouter.post('/add', async (req, res) => {
     }
 
     await pool.query('INSERT INTO contracts set ?', [newConstract])
-    console.log(newConstract)
+    //console.log(newConstract)
+    await req.setFlash("success", "Contract Saved Successfully");
     res.redirect('/contract')
 })
 
@@ -38,8 +39,8 @@ contractRouter.get('/delete/:id', async (req, res) => {
     console.log(req.params.id)
     const { id } = req.params
 
-    const row = await pool.query('DELETE FROM contracts WHERE id = ?', [id])
-
+    await pool.query('DELETE FROM contracts WHERE id = ?', [id])
+    await req.setFlash("success", "Contract Removed Successfully!");
     res.redirect('/contract')
 })
 
@@ -47,7 +48,7 @@ contractRouter.get('/edit/:id', async (req, res) => {
 
     const { id } = req.params
 
-    const contracts = await pool.query('SELECT * FROM contracts WHERE id = ?', [id])
+    const [contracts] = await pool.query('SELECT * FROM contracts WHERE id = ?', [id])
 
     console.log(contracts[0])
 
@@ -56,7 +57,7 @@ contractRouter.get('/edit/:id', async (req, res) => {
 })
 
 
-contractRouter.put('/edit/:id', async (req, res) => {
+contractRouter.post('/edit/:id', async (req, res) => {
 
     const { id } = req.params;
     const { title, description, contract } = req.body;
@@ -67,8 +68,9 @@ contractRouter.put('/edit/:id', async (req, res) => {
     };
 
     await pool.query("UPDATE contracts set ? WHERE id = ?", [editedContract, id]);
-
+    await req.setFlash("success", "Contract Updated Successfully");
     res.redirect('/contract');
+
 })
 
 

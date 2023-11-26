@@ -4,21 +4,21 @@
       <div class="card bg-dark">
         <form action="/contract/add" method="POST" class="card-body card-block">
 
-          {{! Title and save button }}
+          {{! Title }}
           <div class="d-flex align-items-center justify-content-center mb-3">
             <h1 class="text-light mb-3 h4">Add new Contract</h1>
           </div>
-          <label for="title">Write a title:</label>
-          <input type="text" name="title" class="form-control bg-dark text-light mb-2" placeholder="Supplier"
+          <label class="text-light mb-3 h6" for="title">Write a Supplier:</label>
+          <input type="text" name="title" class="form-control bg-dark text-light mb-2" placeholder="Ej. Emp.Construct..."
             autofocus />
+          <label class="text-light mb-3 h6" for="No.Contrat">Write a No.Contract: </label>
+          <input type="text" name="contract" class="form-control bg-dark text-light mb-2" placeholder="Ej. #5500" />
 
-          <label for="url">No. Contract: </label>
-          <input type="text" name="contract" class="form-control bg-dark text-light mb-2" placeholder="No.Contract" />
-
-          <label for="description">Write a description:</label>
+          <label class="text-light mb-3 h6" for="description">Write a Description:</label>
           <textarea name="description" rows="2" class="form-control bg-dark text-light mb-2"
-            placeholder="Description"></textarea>
-
+            placeholder="Ej. The Objetive of the contract is..."></textarea>
+            
+          {{! Save button }}
           <div class="row h-75 d-flex align-items-center p-2">
               <button class="btn btn-primary btn-block">SAVE</button>
           </div>

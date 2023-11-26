@@ -1,7 +1,7 @@
-const mysql = require('mysql2/promise')
-const { database } = require('./config.js')
-//onst { promisify } = require('util')
-const pool = mysql.createPool(database);
+const { createPool } = require("mysql2/promise");
+const { database } = require("./config.js");
+
+const pool = createPool(database);
 
 /*
 pool.getConnection((error, connection) => {
