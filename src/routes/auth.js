@@ -1,64 +1,47 @@
-const Express = require('express')
-const encryptPassword = require('../lib/helpers.js')
-const passport = require('../lib/passport.js')
+const express = require('express');
+const router = express.Router();
 
-const authRouter = Express.Router()
+const passport = require('passport');
+const { isLoggedIn } = require('../lib/auth');
 
-authRouter.get('/signup', (req, res) => {
-    res.render('auth/signup')
-})
-
-authRouter.get('/signin', (req, res) => {
-    res.render('auth/signin')
-})
-
-authRouter.post('/signup', (req, res, next) => {
-
-    console.log(req.body)
-
-    res.send('enviado desde signup')
-
-})
-
-authRouter.post('/signup', async (req, res, next) => {
-    const { fullname, email, password1 } = req.body;
-
-    const password = await encryptPassword(password1);
-
-    // Saving in the Database
-    const [result] = await pool.query("INSERT INTO users SET ? ", {
-        fullname,
-        email,
-        password,
-    });
-
-    req.login(
-        {
-            id: result.insertId,
-            fullname,
-            email,
-        },
-        (err) => {
-            if (err) {
-                return next(err);
-            }
-            return res.redirect("/links");
-        }
-    );
-})
-/*
-const signIn = passport.authenticate("local.signin", {
-    successRedirect: "/links",
-    failureRedirect: "/signin",
-    passReqToCallback: true,
-    failureFlash: true,
+// SIGNUP
+router.get('/signup', (req, res) => {
+    res.render('auth/signup');
 });
-*/
-const logout = (req, res, next) => {
-    req.logout(function (err) {
-        if (err) return next(err);
-        res.redirect("/");
-    });
-};
 
-module.exports = authRouter
+router.post('/signup', passport.authenticate('local.signup', {
+    successRedirect: '/profile',
+    failureRedirect: '/signup',
+    failureFlash: true
+}));
+
+// SINGIN
+router.get('/signin', (req, res) => {
+    res.render('auth/signin');
+});
+
+router.post('/signin', (req, res, next) => {
+    req.check('username', 'Username is Required').notEmpty();
+    req.check('password', 'Password is Required').notEmpty();
+    const errors = req.validationErrors();
+    if (errors.length > 0) {
+        req.flash('message', errors[0].msg);
+        res.redirect('/signin');
+    }
+    passport.authenticate('local.signin', {
+        successRedirect: '/profile',
+        failureRedirect: '/signin',
+        failureFlash: true
+    })(req, res, next);
+});
+
+router.get('/logout', (req, res) => {
+    req.logOut();
+    res.redirect('/');
+});
+
+router.get('/profile', isLoggedIn, (req, res) => {
+    res.render('profile');
+});
+
+module.exports = router;

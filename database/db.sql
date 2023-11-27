@@ -1,25 +1,26 @@
-CREATE DATABASE IF NOT EXISTS contractsdb;
+CREATE DATABASE contractsdb;
 
 USE contractsdb;
 
 -- TABLE USER
--- all pasword wil be encrypted using SHA2
-
+-- all pasword wil be encrypted using SHA1
 CREATE TABLE users (
-  id INT(11) NOT NULL AUTO_INCREMENT,
-  fullname VARCHAR(100) NOT NULL,
-  email VARCHAR(100) NOT NULL,
+  id INT(11) NOT NULL,
+  username VARCHAR(16) NOT NULL,
   password VARCHAR(60) NOT NULL,
-  created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (id)
-) AUTO_INCREMENT=2;
+  fullname VARCHAR(100) NOT NULL
+);
 
--- drop table users
+ALTER TABLE users
+  ADD PRIMARY KEY (id);
+
+ALTER TABLE users
+  MODIFY id INT(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT = 2;
 
 DESCRIBE users;
 
-INSERT INTO users (id, email, password, fullname) 
-  VALUES (1, 'john', 'john@gmail.com', 'John Carter');
+INSERT INTO users (id, username, password, fullname) 
+  VALUES (1, 'john', 'password1', 'John Carter');
 
 SELECT * FROM users;
 
