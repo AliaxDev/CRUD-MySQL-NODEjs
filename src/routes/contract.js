@@ -1,11 +1,14 @@
 const Express = require('express')
 const pool = require('../database')
-
+const { isLoggedIn } = require('../lib/auth.js')
 const contractRouter = Express.Router()
 
-contractRouter.get('/', async (req, res) => {
+const createContractSchema = require('../schemas/contract.schema.js')
+const validator = require('../middlewares/validator.middleware.js')
 
-    const [row] = await pool.query('SELECT * FROM contracts')
+contractRouter.get('/', isLoggedIn, async (req, res) => {
+
+    const [row] = await pool.query('SELECT * FROM contracts WHERE user_id = ?', [req.user.id])
 
     console.log(row)
 
@@ -13,19 +16,19 @@ contractRouter.get('/', async (req, res) => {
     res.render('contract/contract', { contracts: row })
 })
 
-
-contractRouter.get('/add', (req, res) => {
+contractRouter.get('/add', validator(createContractSchema), isLoggedIn, (req, res) => {
 
     res.render('contract/add')
 })
 
-contractRouter.post('/add', async (req, res) => {
+contractRouter.post('/add', isLoggedIn, validator(createContractSchema), async (req, res) => {
 
     const { title, contract, description } = req.body
     const newConstract = {
         title,
         contract,
-        description
+        description,
+        user_id: req.user.id
     }
 
     await pool.query('INSERT INTO contracts set ?', [newConstract])
@@ -34,7 +37,7 @@ contractRouter.post('/add', async (req, res) => {
     res.redirect('/contract')
 })
 
-contractRouter.get('/delete/:id', async (req, res) => {
+contractRouter.get('/delete/:id', isLoggedIn, async (req, res) => {
 
     console.log(req.params.id)
     const { id } = req.params
@@ -44,7 +47,7 @@ contractRouter.get('/delete/:id', async (req, res) => {
     res.redirect('/contract')
 })
 
-contractRouter.get('/edit/:id', async (req, res) => {
+contractRouter.get('/edit/:id', isLoggedIn, async (req, res) => {
 
     const { id } = req.params
 
@@ -56,8 +59,7 @@ contractRouter.get('/edit/:id', async (req, res) => {
     res.render('contract/edit', { contracts: contracts[0] })
 })
 
-
-contractRouter.post('/edit/:id', async (req, res) => {
+contractRouter.post('/edit/:id', isLoggedIn, validator(createContractSchema), async (req, res) => {
 
     const { id } = req.params;
     const { title, description, contract } = req.body;

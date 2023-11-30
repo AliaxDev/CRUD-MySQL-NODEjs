@@ -4,5 +4,12 @@ module.exports = {
             return next();
         }
         return res.redirect('/signin');
+    },
+
+    isNoLoggedIn(req, res, next) {
+        if (req.isAuthenticated()) {
+            return res.redirect('/profile');
+        }
+        return next()
     }
 };
