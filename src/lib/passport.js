@@ -62,11 +62,24 @@ passport.use(
 
       newUser.password = await helpers.encryptPassword(password)
 
-      const [result] = await pool.query('INSERT INTO users SET ?', [newUser])
-      console.log('user guardado')
-      //console.log(result)
-      newUser.id = result.insertId
-      return done(null, newUser)
+      const [res] = await pool.query('SELECT * FROM users WHERE username = ?', [username])
+
+      if (res.length > 0) {
+
+        return done(null, false, await req.setFlash("message", "This username exist"))
+
+      } else {
+
+        const [result] = await pool.query('INSERT INTO users SET ?', [newUser])
+        console.log('user guardado')
+
+        //console.log(result)
+
+        newUser.id = result.insertId
+        return done(null, newUser)
+      }
+
+
     }))
 
 passport.serializeUser((user, done) => {
