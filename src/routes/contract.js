@@ -16,7 +16,7 @@ contractRouter.get('/', isLoggedIn, async (req, res) => {
     res.render('contract/contract', { contracts: row })
 })
 
-contractRouter.get('/add', validator(createContractSchema), isLoggedIn, (req, res) => {
+contractRouter.get('/add', isLoggedIn, (req, res) => {
 
     res.render('contract/add')
 })

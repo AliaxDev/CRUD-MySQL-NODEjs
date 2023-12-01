@@ -20,16 +20,19 @@ passport.use(
       console.log(row)
 
       if (!row.length) {
-        await req.setFlash("error", "No user found");
-        return done(null, false);
+        console.log('ususario no encontrado')
+        let error = 'User not found'
+        return done(null, false, req.setFlash('message', error));
       }
 
       const user = row[0];
       const validPassword = await helpers.matchPassword(password, user.password);
 
       if (!validPassword) {
-        await req.setFlash("error", "Incorrect Password");
-        return done(null, false);
+        console.log('password incorrecta')
+        let error = 'Incorrect Password'
+        await req.setFlash('message', error)
+        return done(null, false,);
       }
 
       done(null, user);

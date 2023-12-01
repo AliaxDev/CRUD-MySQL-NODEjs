@@ -4,7 +4,7 @@ const pool = require('../database.js')
 const indexRouter = Express.Router()
 
 indexRouter.get('/', async (req, res) => {
-    res.send('asd')
+    res.render('index')
 })
 
 module.exports = indexRouter

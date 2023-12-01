@@ -26,6 +26,7 @@
     "mysql2": "3.6.5",
     "passport": "0.6.0",
     "passport-local": "1.0.0",
-    "timeago.js": "4.0.2"
+    "timeago.js": "4.0.2",
+    "zod": "3.22.4"
   }
 }
