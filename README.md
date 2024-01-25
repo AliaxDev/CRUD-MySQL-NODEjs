@@ -1,4 +1,4 @@
-# COMMONjs-MySQL-NODEjs 😀
+# CRUD-MySQL-NODEjs 😀
 
 Simple application with MySQL CRUD in Node.js in common.js, with user authentication using the passport-local dependency and bcryptjs to encrypt passwords.
 Creating views with the Handlebars templating engine and styles with Boostrap 5.3
